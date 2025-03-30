@@ -1,0 +1,20 @@
+class Veiculo:
+    def __init__ (self, nome):
+        self.nome = nome
+
+    def movimentar (self):
+        return "Veículo está em movimento."
+
+class Carro (Veiculo):
+    def movimentar (self):
+        return "Carro está dirigindo."
+
+class Moto (Veiculo):
+    def movimentar (self):
+        return "Moto está acelerando."
+
+carro = Carro("BMW")
+moto = Moto("PCX")
+
+print(f"A {carro.nome} no momento: {carro.movimentar()}")
+print(f"A {moto.nome} no momento: {moto.movimentar()}")
