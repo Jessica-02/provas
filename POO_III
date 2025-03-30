@@ -1,0 +1,42 @@
+class ContaBancaria:
+    def __init__ (self, titular, saldo_inicial=0):
+        self.__titular = titular
+
+        self.__saldo = saldo_inicial
+
+
+    @property
+    def titular(self):
+        return self.__titular
+
+    @titular.setter
+    def titular (self, novo_titular):
+        print('Não é possível alterar')
+
+    @property
+    def saldo(self):
+        return self.__saldo
+
+    @saldo.setter
+    def saldo(self, novo_saldo):
+        print('Não é possível alterar')
+
+    def depositar(self, valor):
+        if valor > 0:
+            self.__saldo += valor
+            print(f' O depósito de R${valor} foi realizado')
+        else:
+            print('O valor de depósito é inválido')
+
+    def sacar (self, valor):
+        if valor <= 0:
+            print('Valor para saque impossível')
+        elif valor > self.__saldo:
+            print('O saldo é insuficiente')
+        else:
+            self.__saldo -= valor
+            print(f' Saque de R${valor} realizado')
+
+    def exibir_saldo(self):
+        print(f'Seu saldo atual é de: R${self.__saldo}')
+conta = ContaBancaria("Mario", 3000)
