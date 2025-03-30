@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova 01</title>
+</head>
+<body>
+    <script>
+        
+        let n1 = Number(prompt("Digite a primeira nota:"));
+        let n2 = Number(prompt("Digite a segunda nota:"));
+        let n3 = Number(prompt("Digite a terceira nota:"));
+        
+        
+        let p1 = 2;
+        let p2 = 2;
+        let p3 = 3;
+                
+        let media = (n1 * p1 + n2 * p2 + n3 * p3) / (p1 + p2 + p3);
+                
+        document.write("A média das notas considerando os pesos é: " + media.toFixed(2));
+        console.log("A média das notas considerando os pesos é: ", media.toFixed(2));
+    </script>
+</body>
+</html>
+
+</html>
