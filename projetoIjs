@@ -1,1 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todolist</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #a1c567;
+            color: #e45353;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #e3e3e3;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        .concluida {
+            text-decoration: line-through;
+            color: #835c5c;
+        }
+        button {
+            margin-left: 15px;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #add-button {
+            background: #646464;
+            color: white;
+        }
+        #delete-all {
+            background: #f3b3b9;
+            color: rgb(0, 0, 0);
+        }
+        #delete-selected {
+            background: #ffc107;
+            color: white;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>TO-DO-LIST</h3>
+        <input type="text" id="tarefa" placeholder="Digite a tarefa">
+        <button id="add-button">Adicionar</button>
+        <ul id="lista"></ul>
+        <div class="actions">
+            <button id="delete-all">Remover Todas as Tarefas</button>
+            <button id="delete-selected">Remover as Tarefas Concluídas</button>
+        </div>
+    </div>
 
+    <script>
+        var todoList = [];
+        var lista = document.getElementById("lista");
+        var tarefaInput = document.getElementById("tarefa");
+        var addButton = document.getElementById("add-button");
+        var deleteAllButton = document.getElementById("delete-all");
+        var deleteSelectedButton = document.getElementById("delete-selected");
+
+        addButton.addEventListener("click", adicionarTarefa);
+        deleteAllButton.addEventListener("click", removerTodas);
+        deleteSelectedButton.addEventListener("click", removerConcluidas);
+
+        function adicionarTarefa() {
+            let tarefaTexto = tarefaInput.value.trim();
+            if (!tarefaTexto) return;
+            
+            let tarefa = {
+                id: Date.now().toString(),
+                texto: tarefaTexto,
+                concluida: false
+            };
+            todoList.push(tarefa);
+            renderizarLista();
+            tarefaInput.value = "";
+        }
+
+        function removerTodas() {
+            todoList = [];
+            renderizarLista();
+        }
+
+        function removerConcluidas() {
+            todoList = todoList.filter(tarefa => !tarefa.concluida);
+            renderizarLista();
+        }
+
+        function alternarConclusao(id) {
+            todoList.forEach(tarefa => {
+                if (tarefa.id === id) {
+                    tarefa.concluida = !tarefa.concluida;
+                }
+            });
+            renderizarLista();
+        }
+
+        function removerTarefa(id) {
+            todoList = todoList.filter(tarefa => tarefa.id !== id);
+            renderizarLista();
+        }
+
+        function renderizarLista() {
+            lista.innerHTML = "";
+            todoList.forEach(tarefa => {
+                let li = document.createElement("li");
+                let checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.checked = tarefa.concluida;
+                checkbox.onclick = () => alternarConclusao(tarefa.id);
+                
+                let texto = document.createElement("span");
+                texto.textContent = tarefa.texto;
+                if (tarefa.concluida) texto.classList.add("concluida");
+                
+                let botaoRemover = document.createElement("button");
+                botaoRemover.textContent = "Remover";
+                botaoRemover.style.background = "#dc3545";
+                botaoRemover.style.color = "white";
+                botaoRemover.onclick = () => removerTarefa(tarefa.id);
+                
+                li.append(checkbox, texto, botaoRemover);
+                lista.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
