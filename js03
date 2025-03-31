@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Notas</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #a1c567;
+            color: #e45353;
+        }
+        .container {
+            max-width: 300px;
+            margin: auto;
+            padding: 25px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .result {
+            margin-top: 30px;
+            padding: 15px;
+            background: #e3e3e3;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Calculadora - Notas</h3>
+        <label for="numeroestudante">Número de estudantes: </label>
+        <input type="number" id="numeroestudante" placeholder="Total de estudantes" min="1">
+        <button id="iniciar">Iniciar</button>
+
+        <div id="notasForm" style="display:none;">
+            <h4>Insira as notas dos alunos</h4>
+            <div id="inputsNotas"></div>
+            <button id="calcular">Calcular Estatísticas</button>
+        </div>
+
+        <div class="result" id="resultados" style="display:none;">
+            <p id="media"></p>
+            <p id="maiorNota"></p>
+            <p id="menorNota"></p>
+        </div>
+    </div>
+
+    <script>
+        let numeroestudante, notas = [], somaNotas = 0, maiorNota = -Infinity, menorNota = Infinity;
+
+        document.getElementById('iniciar').addEventListener('click', function() {
+            numeroestudante = +document.getElementById('numeroestudante').value;  // Usando o operador '+' para conversão
+            if (numeroestudante > 0) {
+                document.getElementById('notasForm').style.display = 'block';
+                gerarCamposNotas(numeroestudante);
+                document.getElementById('iniciar').style.display = 'none';
+            } else {
+                alert("Insira a quantidade de estudantes");
+            }
+        });
+
+        function gerarCamposNotas(qtd) {
+            let divNotas = document.getElementById("inputsNotas");
+            divNotas.innerHTML = ''; // Limpar campos anteriores
+            for (let i = 1; i <= qtd; i++) {
+                divNotas.innerHTML += `<label for="nota${i}">Nota do aluno ${i}:</label>
+                                       <input type="number" id="nota${i}" min="0" max="10"><br>`;
+            }
+        }
+
+        
+        document.getElementById('calcular').addEventListener('click', function() {
+            somaNotas = 0;
+            maiorNota = -Infinity;
+            menorNota = Infinity;
+
+            let i = 1;
+            while (i <= numeroestudante) {
+                let nota = +document.getElementById(`nota${i}`).value;  // Usando o operador '+' para conversão
+                if (nota >= 0 && nota <= 10) {
+                    somaNotas += nota;
+                    maiorNota = Math.max(maiorNota, nota);
+                    menorNota = Math.min(menorNota, nota);
+                } else {
+                    alert(`Nota inválida para o aluno ${i}.`);
+                    return;
+                }
+                i++;
+            }
+
+            let media = somaNotas / numeroestudante;
+            document.getElementById("media").textContent = `Média da turma: ${media.toFixed(2)}`;
+            document.getElementById("maiorNota").textContent = `Maior nota: ${maiorNota}`;
+            document.getElementById("menorNota").textContent = `Menor nota: ${menorNota}`;
+
+            document.getElementById('resultados').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
