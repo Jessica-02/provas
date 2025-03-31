@@ -51,7 +51,7 @@
         let numeroestudante, notas = [], somaNotas = 0, maiorNota = -Infinity, menorNota = Infinity;
 
         document.getElementById('iniciar').addEventListener('click', function() {
-            numeroestudante = +document.getElementById('numeroestudante').value;  // Usando o operador '+' para conversão
+            numeroestudante = +document.getElementById('numeroestudante').value;
             if (numeroestudante > 0) {
                 document.getElementById('notasForm').style.display = 'block';
                 gerarCamposNotas(numeroestudante);
@@ -63,7 +63,7 @@
 
         function gerarCamposNotas(qtd) {
             let divNotas = document.getElementById("inputsNotas");
-            divNotas.innerHTML = ''; // Limpar campos anteriores
+            divNotas.innerHTML = '';
             for (let i = 1; i <= qtd; i++) {
                 divNotas.innerHTML += `<label for="nota${i}">Nota do aluno ${i}:</label>
                                        <input type="number" id="nota${i}" min="0" max="10"><br>`;
@@ -78,7 +78,7 @@
 
             let i = 1;
             while (i <= numeroestudante) {
-                let nota = +document.getElementById(`nota${i}`).value;  // Usando o operador '+' para conversão
+                let nota = +document.getElementById(`nota${i}`).value;
                 if (nota >= 0 && nota <= 10) {
                     somaNotas += nota;
                     maiorNota = Math.max(maiorNota, nota);
