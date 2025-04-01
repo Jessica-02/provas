@@ -124,7 +124,6 @@ function limparCampos() {
     document.getElementById('contactPhone').value = '';
     document.getElementById('contactEmail').value = '';
 }
-
 atualizarLista();
 </script>
 </body>
