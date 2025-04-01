@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Contatos</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #879600;
+            color: #e45353;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 50px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .result {
+            margin-top: 40px;
+            padding: 15px;
+            background: #e3e3e3;
+            border-radius: 5px;
+        }
+        input {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 80%;
+            margin: 5px 0;
+        }
+        button {
+            margin-top: 10px;
+            padding: 8px 20px;
+            background-color: #70af4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2c5f2e;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3>Gerenciamento de Contatos</h3>
+    
+    <div class="contact-form">
+        <input type="text" id="contactName" placeholder="Nome" />
+        <input type="text" id="contactPhone" placeholder="Telefone" />
+        <input type="email" id="contactEmail" placeholder="E-mail" />
+        <button onclick="adicionarContato()">Adicionar Contato</button>
+    </div>
+    
+    <h2>Lista de Contatos</h2>
+    <ul id="contactList"></ul>
+</div>
+
+<script>
+let contatos = [];
+
+function adicionarContato() {
+    const nome = document.getElementById('contactName').value;
+    const telefone = document.getElementById('contactPhone').value;
+    const email = document.getElementById('contactEmail').value;
+    
+    if (nome && telefone && email) {
+        contatos.push({ nome, telefone, email });
+        atualizarLista();
+        limparCampos();
+    } else {
+        alert("Preencha todos os campos");
+    }
+}
+
+function removerContato(indice) {
+    contatos.splice(indice, 1);
+    atualizarLista();
+}
+
+function editarContato(indice) {
+    const novoNome = prompt("Novo nome:", contatos[indice].nome);
+    const novoTelefone = prompt("Novo telefone:", contatos[indice].telefone);
+    const novoEmail = prompt("Novo e-mail:", contatos[indice].email);
+    
+    if (novoNome && novoTelefone && novoEmail) {
+        contatos[indice] = { nome: novoNome, telefone: novoTelefone, email: novoEmail };
+        atualizarLista();
+    } else {
+        alert("Todos os campos são obrigatórios!");
+    }
+}
+
+function atualizarLista() {
+    const contactList = document.getElementById('contactList');
+    contactList.innerHTML = '';
+
+    contatos.forEach((contato, indice) => {
+        const li = document.createElement('li');
+        
+        li.innerHTML = `
+            <div>
+                <strong>${contato.nome}</strong> - ${contato.telefone} <br>
+                <em>${contato.email}</em>
+            </div>
+            <div>
+                <button onclick="editarContato(${indice})">Editar</button>
+                <button onclick="removerContato(${indice})">Remover</button>
+            </div>
+        `;
+        
+        contactList.appendChild(li);
+    });
+}
+
+function limparCampos() {
+    document.getElementById('contactName').value = '';
+    document.getElementById('contactPhone').value = '';
+    document.getElementById('contactEmail').value = '';
+}
+
+atualizarLista();
+</script>
+</body>
+</html>
