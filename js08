@@ -1,1 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Gorjeta</title>
+    <style>
+         body {
+            font-family: sans-serif;
+            background: linear-gradient(120deg, #ccee6e, #457728);
+            margin: 20px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            color: #831414;           
+        }
+
+        .container {
+            background: rgba(115, 255, 87, 0.842);
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 350px;
+            text-align: center;
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 5px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 15px;
+            font-size: 20px;
+        }
+
+        input, select {
+            background: #cbc811;
+            color: #fff;
+        }
+
+        input::placeholder {
+            color: #ddd;
+        }
+
+        button {
+            background-color: #fc7425;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #bb5807;
+        }
+
+        #resultado {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="converter-container">
+        <h1>Conversor de Unidades</h1>
+        <input type="number" id="metros" placeholder="Digite o valor em metros">
+        <select id="unidade">
+            <option value="jarda">Jarda</option>
+            <option value="pe">Pé</option>
+            <option value="polegada">Polegada</option>
+            <option value="milha">Milha</option>
+        </select>
+        <button onclick="converter()">Converter</button>
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        const fatores = { jarda: 1.094, pe: 3.281, polegada: 39.37, milha: 0.000621 };
+        const converter = () => {
+            const metros = parseFloat(document.getElementById('metros').value);
+            const unidade = document.getElementById('unidade').value;
+            const resultadoDiv = document.getElementById('resultado');
+            
+            if (!metros || metros <= 0) {
+                resultadoDiv.textContent = 'Por favor, insira um valor válido em metros.';
+                return;
+            }
+            resultadoDiv.textContent = `${metros} metros equivalem a ${(metros * fatores[unidade]).toFixed(3)} ${unidade}(s).`;
+        };
+    </script>
+</body>
+</html>
 
