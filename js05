@@ -1,1 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS ATIVIDADE 05</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #879600;
+            color: #e45353;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 50px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .result {
+            margin-top: 40px;
+            padding: 15px;
+            background: #e3e3e3;
+            border-radius: 5px;
+        }
+        input[type="number"] {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 80%;
+        }
+        button {
+            margin-top: 20px;
+            padding: 8px 20px;
+            background-color: #70af4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2c5f2e;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<h3>Gerenciador - Tarefas Domésticas</h3>
 
+<div class="task-form">
+    <input type="text" id="taskTitle" placeholder="Tarefa" />
+    <input type="text" id="taskDescription" placeholder="Responsável pela tarefa" />
+    <input type="date" id="taskday" placeholder="Digite a data" />
+    <select id="taskStatus">
+        <option value="false">Pendente</option>
+        <option value="true">Concluída</option>
+    </select>
+    <button onclick="adicionarTarefa()">Adicione a Tarefa</button>
+</div>
+
+<h2>Minhas Tarefas</h2>
+<ul id="taskList"></ul>
+</div>
+
+<script>
+let tarefas = []; 
+
+
+function adicionarTarefa() {
+    const titulo = document.getElementById('taskTitle').value;
+    const descricao = document.getElementById('taskDescription').value;
+    const data = document.getElementById('taskday').value;
+    const status = document.getElementById('taskStatus').value === 'true';
+
+    if (titulo && descricao && data) {
+        tarefas.push({ titulo, descricao, status, data });
+        atualizarLista();
+        limparCampos();
+    } else {
+        alert("Preencha os campos");
+    }
+}
+
+function removerTarefa(indice) {
+    tarefas.splice(indice, 1); 
+    atualizarLista(); 
+}
+
+function atualizarStatus(indice) {
+    tarefas[indice].status = !tarefas[indice].status; 
+    atualizarLista(); 
+}
+
+function atualizarLista() {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = ''; 
+
+    tarefas.forEach((tarefa, indice) => {
+        const li = document.createElement('li');
+
+        li.innerHTML = `
+            <div>
+                <strong>${tarefa.titulo}</strong>
+                <p>${tarefa.descricao}</p>
+                <p><em>Data: ${tarefa.data}</em></p>
+            </div>
+            <div>
+                <span class="task-status ${tarefa.status ? 'concluida' : 'pendente'}">
+                    ${tarefa.status ? 'Concluída' : 'Pendente'}
+                </span>
+                <div class="button-container">
+                    <button onclick="atualizarStatus(${indice})">Atualizar Status</button>
+                    <button class="remove-btn" onclick="removerTarefa(${indice})">Remover</button>
+                </div>
+            </div>
+        `;
+
+        taskList.appendChild(li);
+    });
+}
+
+function limparCampos() {
+    document.getElementById('taskTitle').value = '';
+    document.getElementById('taskDescription').value = '';
+    document.getElementById('taskday').value = '';
+    document.getElementById('taskStatus').value = 'false';
+}
+
+atualizarLista();
+</script>
+</body>
+</html> 
