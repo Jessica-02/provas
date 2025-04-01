@@ -1,1 +1,111 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora_Gorjetas</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: linear-gradient(120deg, #ccee6e, #457728);
+            margin: 20px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            color: #831414;           
+        }
+
+        .container {
+            background: rgba(115, 255, 87, 0.842);
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 350px;
+            text-align: center;
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 5px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 15px;
+            font-size: 20px;
+        }
+
+        input, select {
+            background: #cbc811;
+            color: #fff;
+        }
+
+        input::placeholder {
+            color: #ddd;
+        }
+
+        button {
+            background-color: #fc7425;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #bb5807;
+        }
+
+        #resultado {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculadora - Gorjeta</h2>
+        <input type="number" id="total" placeholder="Digite o total da conta R$" />
+        <select id="qualidade">
+            <option value="0.15">Bom! (15%)</option>
+            <option value="0.1">Regular (10%)</option>
+            <option value="0">Ruim (0%)</option>
+        </select>
+        <button id="calcular">Calcular a gorjeta</button>
+        <p id="resultado"></p>
+    </div>
+
+    <script>
+   
+        const calcularGorjeta = (total, qualidade, callback) => {
+            const gorjeta = total * qualidade; 
+            callback(gorjeta); 
+        };
+
+        const mostrarResultado = (gorjeta) => {
+            const resultadoSpan = document.getElementById('resultado');
+            resultadoSpan.textContent = `A gorjeta ideal de acordo com sua satifação é R$: ${gorjeta.toFixed(2)}`;
+        };
+
+        document.getElementById('calcular').addEventListener('click', () => {
+            const total = parseFloat(document.getElementById('total').value); 
+            const qualidade = parseFloat(document.getElementById('qualidade').value); 
+
+            if (isNaN(total) || total <= 0) {
+                document.getElementById('resultado').textContent = 'Inserir um valor válido';
+                return;
+            }
+      
+            calcularGorjeta(total, qualidade, (gorjeta) => mostrarResultado(gorjeta));
+        });
+    </script>
+</body>
+</html>
