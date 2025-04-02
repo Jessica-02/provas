@@ -1,1 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interativo</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #879600;
+            color: #e45353;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 90%;
+            width: 500px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #70af4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button:hover {
+            background-color: #2c5f2e;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3>Quiz de Curiosidades</h3>
+    <h2 id="question"></h2>
+    
+    <div id="options"></div>
+    
+    <h3 id="statusAnswer"></h3>
+    
+    <button id="reload" onclick="location.reload()" style="display:none;">Tentar Novamente</button>
+</div>
+
+<script>
+    const questions = [
+        { question: "Quem deu origem à conhecida ÁRVORE DE NATAL'?", options: ["Ingleses", "Romanos", "Vikings", "Estadunidenses"], answer: 2 },
+        { question: "Qual é a real função do farmacêutico em uma drogaria?", options: ["Colocar crédito no cel", "Ajudar no caixa", "estipular formas de venda", "nenhuma das anteriores"], answer: 3 },
+        { question: "Quem a FORD tenta superar?", options: ["Toyota", "Tesla", "BYD", "BMW"], answer: 1 },
+        { question: "Qual o coletivo de camelos?", options: ["bando", "rebanho", "cáfila", "manada"], answer: 2 }
+    ];
+    
+    let nowQuestion = Math.floor(Math.random() * questions.length);
+    document.getElementById("question").textContent = questions[nowQuestion].question;
+    
+    let optionsContainer = document.getElementById("options");
+    questions[nowQuestion].options.forEach((option, index) => {
+        let button = document.createElement("button");
+        button.textContent = option;
+        button.onclick = () => checkAnswer(index);
+        optionsContainer.appendChild(button);
+    });
+    
+    function checkAnswer(answer) {
+        let statusAnswer = document.getElementById("statusAnswer");
+        if (answer === questions[nowQuestion].answer) {
+            statusAnswer.textContent = "Acertou!!!";
+        } else {
+            statusAnswer.textContent = `Errou! Resposta correta: ${questions[nowQuestion].options[questions[nowQuestion].answer]}`;
+        }
+        document.getElementById("reload").style.display = "block";
+    }
+</script>
+</body>
+</html>
 
