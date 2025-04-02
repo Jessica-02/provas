@@ -1,1 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Caixa Eletrônico</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #6563e6;
+            color: #b6b85f;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 90%;
+            width: 500px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .input-section select, .input-section input {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #066b5e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button:hover {
+            background-color: #2f2c5f;
+        }
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulador de Caixa Eletrônico</h1>
+        <div class="input-section">
+            <select id="operacao">
+                <option value="saldo">Consultar Saldo</option>
+                <option value="sacar">Sacar</option>
+                <option value="depositar">Depositar</option>
+            </select>
+            <input type="number" id="valor" placeholder="Digite o valor" min="1">
+            <button id="realizar">Realizar</button>
+        </div>
+        <p class="result" id="resultado"></p>
+    </div>
+    <script>
+        let saldo = 1000;
+        
+        document.getElementById('realizar').addEventListener('click', () => {
+            const operacao = document.getElementById('operacao').value;
+            const valorInput = document.getElementById('valor').value;
+            const resultado = document.getElementById('resultado');
+            
+            let valor = parseFloat(valorInput);
+            
+            if (operacao !== "saldo" && (isNaN(valor) || valor <= 0)) {
+                resultado.textContent = "Por favor, insira um valor válido.";
+                return;
+            }
+            
+            if (operacao === "saldo") {
+                resultado.textContent = `Saldo atual: R$ ${saldo.toFixed(2)}`;
+            } else if (operacao === "sacar") {
+                if (valor > saldo) {
+                    resultado.textContent = "Saldo insuficiente.";
+                } else {
+                    saldo -= valor;
+                    resultado.textContent = `Saque realizado. Novo saldo: R$ ${saldo.toFixed(2)}`;
+                }
+            } else if (operacao === "depositar") {
+                saldo += valor;
+                resultado.textContent = `Depósito realizado. Novo saldo: R$ ${saldo.toFixed(2)}`;
+            }
+        });
+    </script>
+</body>
+</html>
 
