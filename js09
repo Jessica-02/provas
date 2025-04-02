@@ -1,1 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Anotações</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #879600;
+            color: #e45353;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 90%;
+            width: 500px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .listinha {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e3e3e3;
+            border-radius: 5px;
+        }
+        input {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #70af4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button:hover {
+            background-color: #2c5f2e;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f4f4f4;
+            padding: 10px;
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+            flex-wrap: wrap;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            animation: blink 0.7s infinite alternate;
+        }
+       
+        @keyframes blink {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            li {
+                flex-direction: column;
+                text-align: left;
+            }
+            button {
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3>Aplicativo para Anotações</h3>
+    
+    <div class="note-form">
+        <input type="text" id="inserirNota" placeholder="Digite aqui sua nota">
+        <span id="errorMessage" class="error-message"></span>
+        <button onclick="add()">Adicionar Nota à Lista</button>
+    </div>
+    
+    <h2>Lista de Notas</h2>
+    <ul id="Lista" class="listinha"></ul>
+</div>
+
+<script>
+    function add() {
+        let input = document.getElementById("inserirNota");
+        let message = document.getElementById("errorMessage");
+        let text = input.value;
+        
+        if (text === "") {
+            message.textContent = "Digite uma nota válida";
+            return;
+        }
+        
+        message.textContent = "";
+        
+        let ul = document.getElementById("Lista");
+        let li = document.createElement("li");
+        
+        let textSpan = document.createElement("span");
+        textSpan.textContent = text;
+        
+        let deleteButton = document.createElement("button");
+        deleteButton.textContent = "Excluir";
+        deleteButton.onclick = function () {
+            ul.removeChild(li);
+        };
+        
+        li.appendChild(textSpan);
+        li.appendChild(deleteButton);
+        ul.appendChild(li);
+        input.value = "";
+    }
+</script>
+</body>
+</html>
 
