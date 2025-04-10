@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lojinha Show </title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0; padding: 0;
+      background: #f5f5f5;
+    }
+
+    header, .cart, .login, .catalog, .checkout {
+        max-width: 900px;
+        margin: 20px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+}
+
+header {
+  background-color: rgb(199, 179, 155);
+}
+
+    .product {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    header h1 {
+  text-align: center;
+  color: rgb(0, 0, 0);
+
+}
+
+.catalog {
+  text-align: center;
+  color: rgb(0, 0, 0);
+  background-color: rgb(199, 179, 155);
+}
+
+#product-list {
+  text-align: left;
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Lojinha Show - Faça seu carrinho e aproveite!</h1>
+    <div id="user-section">
+      <input id="username" placeholder="Qual o seu nome?" />
+      <span id="login-error"> Necessário digitar o seu nome</span>
+      <button onclick="login()">Entrar</button>
+    </div>
+    <div id="logout-section" class="hidden">
+      Olá, <span id="user-name-display"></span>!
+      <button onclick="logout()">Sair</button>
+    </div>
+  </header>
+
+  <section class="catalog" id="catalog">
+    <h2>Catálogo de Produtos</h2>
+    <div id="product-list">Carregando produtos</div>
+  </section>
+
+  <section class="cart hidden" id="cart">
+    <h2>Carrinho de Compras</h2>
+    <div id="cart-items">Sem produtos no carrinho.</div>
+    <p><strong>Total: R$ <span id="cart-total">0.00</span></strong></p>
+    <button onclick="finalizarCompra()">Finalize sua Compra</button>
+  </section>
+
+  <section class="checkout hidden" id="checkout">
+    <h2>Compra finalizada com sucesso!</h2>
+  </section>
+
+  <script>
+    const API_URL = "https://fakestoreapi.com/products";
+    let carrinho = [];
+    let usuario = null;
+
+    async function carregarProdutos() {
+      try {
+        const res = await fetch(API_URL);
+        const produtos = await res.json();
+        const lista = document.getElementById("product-list");
+        lista.innerHTML = "";
+
+        produtos.forEach(prod => {
+          const div = document.createElement("div");
+          div.className = "product";
+          div.innerHTML = `
+            <div>
+              <strong>${prod.title}</strong><br>
+              R$ ${prod.price.toFixed(2)}
+            </div>
+            <button onclick="adicionarAoCarrinho(${prod.id}, '${prod.title}', ${prod.price})">Adicionar</button>
+          `;
+          lista.appendChild(div);
+        });
+      } catch {
+        document.getElementById("product-list").innerHTML = "Erro ao carregar produtos.";
+      }
+    }
+
+    function login() {
+  const nome = document.getElementById("username").value.trim();
+  const erro = document.getElementById("login-error");
+
+  if (!nome) {
+    erro.style.display = "inline";
+    return;
+  }
+
+  erro.style.display = "none";
+  usuario = nome;
+  document.getElementById("user-section").classList.add("hidden");
+  document.getElementById("logout-section").classList.remove("hidden");
+  document.getElementById("user-name-display").textContent = nome;
+  document.getElementById("cart").classList.remove("hidden");
+}
+
+    function logout() {
+      usuario = null;
+      carrinho = [];
+      document.getElementById("cart-items").innerHTML = "Seu carrinho está vazio.";
+      document.getElementById("cart-total").textContent = "0.00";
+      document.getElementById("user-section").classList.remove("hidden");
+      document.getElementById("logout-section").classList.add("hidden");
+      document.getElementById("cart").classList.add("hidden");
+      document.getElementById("checkout").classList.add("hidden");
+    }
+
+    function adicionarAoCarrinho(id, nome, preco) {
+      const existente = carrinho.find(item => item.id === id);
+      if (existente) {
+        existente.qtd++;
+      } else {
+        carrinho.push({ id, nome, preco, qtd: 1 });
+      }
+      atualizarCarrinho();
+    }
+
+    function atualizarCarrinho() {
+      const container = document.getElementById("cart-items");
+      container.innerHTML = "";
+      let total = 0;
+
+      carrinho.forEach(item => {
+        const subtotal = item.preco * item.qtd;
+        total += subtotal;
+        const div = document.createElement("div");
+        div.textContent = `${item.nome} - ${item.qtd} x R$ ${item.preco.toFixed(2)} = R$ ${subtotal.toFixed(2)}`;
+        container.appendChild(div);
+      });
+
+      if (carrinho.length === 0) {
+        container.innerHTML = "Sem produtos no carrinho";
+      }
+
+      document.getElementById("cart-total").textContent = total.toFixed(2);
+    }
+
+    async function finalizarCompra() {
+      if (!usuario || carrinho.length === 0) return;
+      try {
+        await fakeAfterShipNotification();
+        document.getElementById("checkout").classList.remove("hidden");
+        carrinho = [];
+        atualizarCarrinho();
+      } catch {}
+    }
+
+    async function fakeAfterShipNotification() {
+      return new Promise(resolve => setTimeout(resolve, 1500));
+    }
+
+    carregarProdutos();
+  </script>
+</body>
+</html>
